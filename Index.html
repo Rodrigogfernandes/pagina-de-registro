@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Exames</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Registro de Pacientes</h1>
+    
+    <button type="button" onclick="abrirModal('novo')">Novo Registro</button>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div id="modalForm" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modalTitle">Novo Registro</h2>
+            <form id="formExame" onsubmit="salvarExame(event)">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" id="nomePaciente" name="nomePaciente" placeholder="Nome do Paciente" required style="flex: 2;">
+                    <select id="modalidade" name="modalidade" required style="flex: 1;">
+                        <option value="" disabled selected>Selecione a Modalidade</option>
+                        <option value="raiox">RX</option>
+                        <option value="tomografia">TC</option>
+                        <option value="ressonancia">RM</option>
+                        <option value="densitometria">DO</option>
+                        <option value="mamografia">MG</option>
+                    </select>
+                    <input type="text" id="observacoes" name="observacoes" placeholder="Exame Realizado" required style="flex: 1.5;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                    <input type="datetime-local" id="dataHoraExame" name="dataHoraExame" style="flex: 1.5;">
+                    <input type="text" id="nomeTecnico" name="nomeTecnico" placeholder="Técnico de Radiologia" required style="flex: 2;">
+                    <button type="submit" style="flex: 1;">Registrar</button>
+                    <button type="button" onclick="limparCampos()" style="flex: 1;">Limpar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Pesquisar registros...">
+            <button type="button" id="btnLimparPesquisa">Limpar Pesquisa</button>
+            <button type="button" id="btnFiltrarAvancado">Filtro Avançado</button>
+            <button type="button" id="btnEditarRegistro" onclick="abrirModal('editar')">Editar</button>
+            <button type="button" id="btnExcluirRegistro">Excluir</button>
+            <!-- Novo botão de exportar -->
+            <button type="button" id="btnExportar" onclick="abrirModalExportar()">Exportar</button>
+        </div>
+
+        <div id="filtroAvancadoContainer" style="display: none;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <select id="filtroModalidade">
+                    <option value="">Filtrar por Modalidade</option>
+                    <option value="raiox">RX</option>
+                    <option value="tomografia">TC</option>
+                    <option value="ressonancia">RM</option>
+                    <option value="densitometria">DO</option>
+                    <option value="mamografia">MG</option>
+                </select>
+                <input type="date" id="dataInicio" placeholder="Data de Início">
+                <input type="date" id="dataFim" placeholder="Data de Fim">
+            </div>
+            <div style="margin-top: 10px;">
+                <button type="button" id="btnAplicarFiltroAvancado" onclick="aplicarFiltroAvancado()">Aplicar Filtro</button>
+                <button type="button" id="btnLimparFiltroAvancado" onclick="limparFiltroAvancado()">Limpar Filtro</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="5" id="infoRegistros">Exibindo 0 de 0 registros</th>
+                </tr>
+                <tr> 
+                    <th>Nome do Paciente</th>
+                    <th>Modalidade</th>
+                    <th>Exame Realizado</th>
+                    <th>Data e Hora</th>
+                    <th>Técnico</th>
+                </tr>
+            </thead>
+            <tbody id="listaExames">
+                <!-- Registros serão adicionados dinamicamente aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Exportação -->
+    <div id="modalExportar" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModalExportar()">&times;</span>
+            <h2>Confirmar Exportação</h2>
+            <p>Você deseja baixar um arquivo .txt com todos os registros?</p>
+            <button type="button" onclick="exportarRegistros()">Sim</button>
+            <button type="button" onclick="fecharModalExportar()">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
